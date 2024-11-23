@@ -9,15 +9,20 @@ class Book extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['title', 'author', 'year_published', 'synopsis', 'genre'];
+    protected $fillable = ['title', 'author', 'year_published', 'synopsis', 'genre', 'status'];
 
     public function borrows()
-    {
+    {   
         return $this->hasMany(Borrow::class);
     }
 
     public function genres()
     {
         return $this->belongsToMany(Genre::class, 'book_genres');
+    }
+
+    public function isAvailable()
+    {
+        return $this->status === 'available';
     }
 }

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto my-8">
+    <div class="container mx-auto my-8 text-left">
         <h1 class="text-3xl font-bold mb-6">Books by Category</h1>
 
         <table class="table-auto w-full text-left border-collapse border border-gray-300">

@@ -28,3 +28,9 @@ Route::resource('genres', GenreController::class);
 
 Route::resource('categories', BookGenreController::class)->only(['index']);
 Route::resource('borrows', BorrowController::class)->only(['index']);
+
+Route::get('genres/{genre}/books', [GenreController::class, 'booksByGenre'])->name('genres.books');
+Route::get('members/{member}/borrows', [MemberController::class, 'borrowedBooks'])->name('members.borrows');
+
+Route::get('/books/{book}/borrow', [BookController::class, 'showBorrowPage'])->name('books.borrow');
+Route::post('/books/{book}/borrow', [BookController::class, 'borrow'])->name('books.borrow');

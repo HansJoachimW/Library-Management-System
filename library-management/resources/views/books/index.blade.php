@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto">
+    <div class="container mx-auto text-left">
         <h1 class="text-3xl font-bold mb-4">Books List</h1>
         <a href="{{ route('books.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">Add
             Book</a>
@@ -12,6 +12,7 @@
                     <th class="px-4 py-2">Title</th>
                     <th class="px-4 py-2">Author</th>
                     <th class="px-4 py-2">Genres</th>
+                    <th class="px-4 py-2">Status</th>
                     <th class="px-4 py-2">Actions</th>
                 </tr>
             </thead>
@@ -28,12 +29,18 @@
                                 @endif
                             @endforeach
                         </td>
+                        <td class="border px-4 py-2">{{ ucfirst($book->status) }}</td>
                         <td class="border px-4 py-2">
-                            <!-- Edit Button -->
+                            @if ($book->status === 'available')
+                                <a href="{{ route('books.borrow', $book->id) }}"
+                                    class="bg-blue-500 text-white px-4 py-2 rounded">Borrow</a>
+                            @else
+                                <span class="text-gray-500">Not Available</span>
+                            @endif
+
                             <a href="{{ route('books.edit', $book->id) }}"
                                 class="bg-yellow-500 text-white px-4 py-2 rounded">Edit</a>
 
-                            <!-- Delete Button -->
                             <form action="{{ route('books.destroy', $book->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')

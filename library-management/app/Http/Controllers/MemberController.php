@@ -17,6 +17,12 @@ class MemberController extends Controller
         return view('members.index', compact('members'));
     }
 
+    public function borrowedBooks(Member $member)
+    {
+        $borrows = $member->borrows()->with('book')->get();
+        return view('members.by_member', compact('member', 'borrows'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

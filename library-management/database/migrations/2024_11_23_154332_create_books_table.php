@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('author');
             $table->integer('year_published');
             $table->text('synopsis');
+            $table->enum('status', ['available', 'borrowed'])->default('available');
             $table->string('genre')->nullable(false)->default(null);
             $table->timestamps();
         });

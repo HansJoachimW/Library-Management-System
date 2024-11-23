@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto my-8">
+    <div class="container mx-auto my-8 text-left">
         <h1 class="text-2xl font-bold mb-4">Genres</h1>
         <a href="{{ route('genres.create') }}" class="bg-blue-500 text-white px-4 py-2 rounded mb-4 inline-block">Add
             Genre</a>
@@ -18,12 +18,13 @@
                     <tr class="border-b">
                         <td class="px-4 py-2">{{ $genre->name }}</td>
                         <td class="px-4 py-2">
-                            <a href="{{ route('genres.edit', $genre) }}" class="text-blue-500 mr-2">Edit</a>
+                            <a href="{{ route('genres.books', $genre->id) }}" class="bg-blue-500 text-white px-4 py-2 rounded">View Books</a>
+                            <a href="{{ route('genres.edit', $genre) }}" class="bg-blue-500 text-white px-4 py-2 rounded">Edit</a>
                             <form action="{{ route('genres.destroy', $genre) }}" method="POST"
                                 style="display:inline-block;">
                                 @csrf
                                 @method('DELETE')
-                                <button type="submit" class="text-red-500">Delete</button>
+                                <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded">Delete</button>
                             </form>
                         </td>
                     </tr>

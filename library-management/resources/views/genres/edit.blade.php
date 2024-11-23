@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto my-8">
+    <div class="container mx-auto my-8 text-left">
         <h1 class="text-2xl font-bold mb-4">Edit Genre</h1>
 
         <form action="{{ route('genres.update', $genre) }}" method="POST" class="bg-white p-6 rounded shadow-md">

@@ -1,7 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container mx-auto">
+    <div class="container mx-auto text-left">
         <h1 class="text-3xl font-bold mb-4">Edit Book</h1>
 
         <form action="{{ route('books.update', $book->id) }}" method="POST">
@@ -40,6 +40,14 @@
                             {{ $genre->name }}
                         </option>
                     @endforeach
+                </select>
+            </div>
+
+            <div class="mb-4">
+                <label for="status" class="block">Status</label>
+                <select name="status" id="status" class="w-full px-4 py-2 border rounded">
+                    <option value="available" {{ old('status', $book->status) === 'available' ? 'selected' : '' }}>Available</option>
+                    <option value="borrowed" {{ old('status', $book->status) === 'borrowed' ? 'selected' : '' }}>Borrowed</option>
                 </select>
             </div>
 

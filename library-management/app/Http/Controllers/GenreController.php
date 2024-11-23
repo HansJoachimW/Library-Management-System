@@ -17,6 +17,12 @@ class GenreController extends Controller
         return view('genres.index', compact('genres'));
     }
 
+    public function booksByGenre(Genre $genre)
+    {
+        $books = $genre->books;
+        return view('book_genres.by_genre', compact('genre', 'books'));
+    }
+
     /**
      * Show the form for creating a new resource.
      */

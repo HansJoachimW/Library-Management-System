@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Book;
 use App\Models\Genre;
+use App\Models\Member;
+use App\Models\Borrow;
 use App\Models\BookGenre;
+use Illuminate\Http\Request;
 use App\Http\Requests\StoreBookRequest;
 use App\Http\Requests\UpdateBookRequest;
 
@@ -16,7 +19,9 @@ class BookController extends Controller
     public function index()
     {
         $books = Book::with('genres')->get();
-        return view('books.index', compact('books'));
+        $members = Member::all();
+
+        return view('books.index', compact('books', 'members'));
     }
 
     /**
@@ -92,6 +97,7 @@ class BookController extends Controller
             'year_published' => 'required|integer',
             'synopsis' => 'nullable',
             'genre_ids' => 'required|array',
+            'status' => 'required|in:available,borrowed'
         ]);
 
         $book->update([
@@ -99,6 +105,7 @@ class BookController extends Controller
             'author' => $request->author,
             'year_published' => $request->year_published,
             'synopsis' => $request->synopsis,
+            'status' => $request->status,
         ]);
 
         // dd($request->genre_ids);
@@ -117,5 +124,38 @@ class BookController extends Controller
         $book->delete();
 
         return redirect()->route('books.index');
+    }
+
+    public function showBorrowPage(Book $book)
+    {
+        // Fetch all members who are eligible to borrow books
+        $members = Member::all();
+
+        // Show the borrow page with the members list
+        return view('books.borrow', compact('book', 'members'));
+    }
+
+    public function borrow(Request $request, Book $book)
+    {
+        $request->validate([
+            'member_id' => 'required|exists:members,id',
+        ]);
+
+        if ($book->status !== 'available') {
+            return back()->with('error', 'This book is not available for borrowing.');
+        }
+
+        Borrow::create([
+            'book_id' => $book->id,
+            'member_id' => $request->member_id,
+            'borrow_at' => now(),
+            'status' => 'borrowed',
+            'return_at' =>  now()->addWeeks(2),
+        ]);
+
+        // Update the book's status to borrowed
+        $book->update(['status' => 'borrowed']);
+
+        return redirect()->route('books.index')->with('success', 'Book successfully borrowed.');
     }
 }
